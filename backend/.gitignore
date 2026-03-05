@@ -1,0 +1,17 @@
+# Môi trường ảo
+venv/
+ENV/
+.env
+
+# Python rác
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# IDE (nếu dùng VS Code)
+.vscode/
+
+# Database cục bộ (nếu có)
+*.db
+*.sqlite3
