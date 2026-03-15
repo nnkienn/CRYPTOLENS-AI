@@ -47,3 +47,35 @@ Nếu ông viết await tuần tự cho từng cái, người dùng sẽ phải 
 Nếu ông dùng asyncio.gather(1, 2, 3), người dùng chỉ phải đợi bằng: Thời gian của cái lâu nhất.
 
 Kết luận: gather dùng để tối ưu tốc độ cho MỘT request cụ thể cần làm nhiều việc I/O cùng lúc.
+
+📝 Tổng kết Day 4 - Pydantic Data Models
+Xử lý chuỗi (String manipulation):
+
+.upper(): IN HOA TOÀN BỘ.
+
+.strip(): Dọn dẹp khoảng trắng dư thừa ở hai đầu.
+
+Xử lý danh sách (Collection logic):
+
+set(...): Cái phễu lọc trùng (giống HashSet). Trong Python, set chỉ chứa các phần tử duy nhất.
+
+list(...): Ép kiểu ngược lại về danh sách (giống ArrayList) để giữ đúng định dạng dữ liệu trả về.
+
+Pydantic Core:
+
+@field_validator: "Người gác cổng" cho từng trường dữ liệu. Bạn muốn nắn dòng nào thì gọi tên dòng đó ra để xử lý.
+
+frozen=True: Khóa object lại. Một khi đã tạo ra bài báo là "bất di bất dịch", không ai sửa lung tung được nữa.
+
+from_attributes=True: Chiếc vé thông hành để Schema này làm việc được với Database (SQLAlchemy) vào ngày mai.
+
+💡 Một mẹo nhỏ cho bạn (Tips)
+Trong Python, khi bạn thấy cụm [s.upper().strip() for s in v if s], hãy nhớ nó là một bộ lọc 3 trong 1: Duyệt -> Lọc -> Biến đổi.
+
+Day 4 coi như "Done"! Bạn đã có:
+
+Cấu trúc thư mục chuẩn.
+
+Schema bảo mật dữ liệu.
+
+Cách test module với python -m.
