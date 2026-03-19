@@ -1,23 +1,21 @@
 from fastapi import FastAPI
-from datetime import datetime
-import asyncio
+from app.core.database import engine
+from sqlmodel import SQLModel
 
-app = FastAPI(title="CryptoLens AI")
+# QUAN TRỌNG: Ông phải import các Model vào đây 
+# thì SQLModel mới biết đường mà tạo bảng
+from app.modules.auth import models as auth_models
+from app.modules.crawler import models as crawler_models
 
-@app.get("/health")
-async def health_check():
-    """
-    Endpoint kiểm tra trạng thái hệ thống. 
-    Sau này sẽ dùng để check kết nối DB, Redis, v.v.
-    """
-    return {
-        "status": "active",
-        "timestamp": datetime.now().isoformat(),
-        "version": "1.1",
-        "engine": "FastAPI + Asyncio"
-    }
+app = FastAPI()
 
-# Cách chạy trực tiếp nếu không muốn gõ uvicorn ngoài terminal
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8080, reload=True)
+@app.on_event("startup")
+async def on_startup():
+    # Lệnh này sẽ tự động tạo Schema và Bảng trong Postgres
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
+    print("🚀 Database đã được khởi tạo: Các bảng User và Article đã sẵn sàng!")
+
+@app.get("/")
+async def root():
+    return {"message": "CryptoLens AI is Running"}
