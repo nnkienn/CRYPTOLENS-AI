@@ -7,3 +7,7 @@ asyncpg
 psycopg2-binary
 qdrant-client
 pydantic-settings
+aio-pika
+httpx
+beautifulsoup4
+alembic

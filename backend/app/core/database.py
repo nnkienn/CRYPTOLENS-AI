@@ -1,21 +1,21 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker, declarative_base
-from config.settings import settings
+from typing import AsyncGenerator
 
-# Tạo engine kết nối Async
-engine = create_async_engine(settings.DATABASE_URL, echo=True)
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import sessionmaker
+from sqlmodel.ext.asyncio.session import AsyncSession
 
-# Tạo Session để thao tác với DB
-AsyncSessionLocal = sessionmaker(
-    engine, 
-    class_=AsyncSession, 
-    expire_on_commit=False
+from app.core.config import settings
+
+
+engine = create_async_engine(settings.DATABASE_URL, echo=False, future=True)
+
+async_session_factory = sessionmaker(
+    engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
 )
 
-# Base class để các models kế thừa
-Base = declarative_base()
 
-# Dependency để inject vào FastAPI routes
-async def get_db():
-    async with AsyncSessionLocal() as session:
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_factory() as session:
         yield session

@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI
 from app.core.database import engine
 from sqlmodel import SQLModel
